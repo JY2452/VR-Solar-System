@@ -4,35 +4,35 @@ using UnityEngine;
 
 public class Body : MonoBehaviour
 {
-    public GlobalSettings Settings;
     public double mass;
-    public double vx;
-    public double vz;
-    public double x;
-    public double z;
+    public SolSystem sol;
+    private double vx;
+    private double vz;
+    public float startingXPos;
+    public float startingZVel;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.gameObject.transform.position = new Vector3(startingXPos, 0, 0);
+        vz = -startingZVel * sol.scale;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void updatePosition(double timestep) 
+    public void updatePosition(double timescale, double scale) 
     {
-        this.x += this.vx * timestep;
-        this.z += this.vz * timestep;
+        this.gameObject.transform.position = this.gameObject.transform.position + new Vector3((float)(vx * timescale * Time.deltaTime * scale), 0, (float)(vz * timescale * Time.deltaTime * scale));
     }
 
-    public void updateVelocity(double ax, double az, double timestep)
+    public void updateVelocity(double ax, double az, double timescale)
     {
-        this.vx += ax * timestep;
-        this.vz += az * timestep;
+        this.vx += ax;
+        this.vz += az;
     }
 }

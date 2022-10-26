@@ -6,28 +6,38 @@ using UnityEngine;
 public class SolSystem : MonoBehaviour
 {
     public Body[] bodies;
-    public int scale;
-    private double G = 6.67384e-11;
+    public double scale;
+    private double G;
+    public double timescale;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        G = 6.67384e-11;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        int i = 0;
+        while (i < bodies.Length) {
+            (double a_x, double a_z) = (0,0);
+            for (int j = 0; j < bodies.Length; j++) {
+                (double ax, double az) = calcAcceleration(bodies[i], bodies[j]);
+                a_x += ax;
+                a_z += az;
+            }
+
+            bodies[i].updateVelocity(a_x, a_z, timescale);
+            bodies[i].updatePosition(timescale, scale);
+        }
     }
 
-    private (double distX, double distZ) calcDistance(Body body1, Body body2)
+    private (double ax, double az) calcAcceleration(Body body0, Body body) 
     {
-        return (body2.x - body1.x, body2.z - body1.z);
-    }
-
-    private (double ax, double az) calcAcceleration(Body body, double dx, double dz) 
-    {
+        double dx = (body.gameObject.transform.position.x - body0.gameObject.transform.position.z);
+        double dz = (body.gameObject.transform.position.z - body0.gameObject.transform.position.z);
         double totalDistance = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dz, 2));
         double ax, az;
 
@@ -40,4 +50,6 @@ public class SolSystem : MonoBehaviour
 
         return (ax, az);
     }
+
+
 }
