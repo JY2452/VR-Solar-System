@@ -66,6 +66,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# IL2CPP build artifacts should be ignored
+*BackUpThisFolder_ButDontShipItWithYourGame
+*BurstDebugInformation_DoNotShip
+
 # Packed Addressables
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 
