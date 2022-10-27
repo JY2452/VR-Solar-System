@@ -15,9 +15,9 @@ public class Body : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Initializing Body of " + this.gameObject);
-        this.gameObject.transform.position = new Vector3(startingXPos, 0, 0);
-        vz = -startingZVel;
+        this.gameObject.transform.position = new Vector3((float)(startingXPos * (1/sol.scale)), 0, 0);
+        this.vz = startingZVel;
+        Debug.Log("Initializing Body of " + this.gameObject + " at " + this.gameObject.transform.position + " with a velocity of " + vz * (1/sol.scale));
     }
 
     // Update is called once per frame
@@ -26,16 +26,18 @@ public class Body : MonoBehaviour
 
     }
 
-    public void updatePosition(double timescale, double scale) 
+    public void updatePosition(double timescale, double scale, float timestep) 
     {
-        //Debug.Log("Updating position for " + this.gameObject);
-        this.gameObject.transform.position = this.gameObject.transform.position + new Vector3((float)(vx * timescale * Time.deltaTime * scale), 0, (float)(vz * timescale * Time.deltaTime * scale));
+        Debug.Log("Raw velocity of " + this.gameObject + " is (" + vx + "," + vz + ")");
+        Vector3 velocity = new Vector3((float)(vx * timescale * timestep * (1/scale)), 0, (float)(vz * timescale * timestep * (1/scale)));
+        Debug.Log("Velocity to be added to position of " + this.gameObject + " is (" + (vx * timescale * timestep * (1/scale)) + "," + (vz * timescale * timestep * (1/scale)) + ")");
+        this.gameObject.transform.position = this.gameObject.transform.position + velocity;
         Debug.Log("New position for " + this.gameObject + " is " + this.gameObject.transform.position);
     }
 
-    public void updateVelocity(double ax, double az, double timescale)
+    public void updateVelocity(double ax, double az, double timescale, float timestep)
     {
-        this.vx += ax;
-        this.vz += az;
+        this.vx += ax * timestep * timescale;
+        this.vz += az * timestep * timescale;
     }
 }
