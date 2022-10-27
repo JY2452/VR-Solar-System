@@ -929,7 +929,7 @@ MonoBehaviour:
   bodies:
   - {fileID: 871263447}
   - {fileID: 773190235}
-  scale: 0.000000001
+  scale: 0.000000000001
   timescale: 300000
 --- !u!1001 &1770726393
 PrefabInstance:

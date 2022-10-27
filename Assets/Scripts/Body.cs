@@ -15,8 +15,9 @@ public class Body : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Initializing Body of " + this.gameObject);
         this.gameObject.transform.position = new Vector3(startingXPos, 0, 0);
-        vz = -startingZVel * sol.scale;
+        vz = -startingZVel;
     }
 
     // Update is called once per frame
@@ -27,7 +28,9 @@ public class Body : MonoBehaviour
 
     public void updatePosition(double timescale, double scale) 
     {
+        //Debug.Log("Updating position for " + this.gameObject);
         this.gameObject.transform.position = this.gameObject.transform.position + new Vector3((float)(vx * timescale * Time.deltaTime * scale), 0, (float)(vz * timescale * Time.deltaTime * scale));
+        Debug.Log("New position for " + this.gameObject + " is " + this.gameObject.transform.position);
     }
 
     public void updateVelocity(double ax, double az, double timescale)
