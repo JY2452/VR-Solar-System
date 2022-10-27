@@ -23,6 +23,8 @@ public class Billboard : MonoBehaviour
 
         massText = canvas.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>();
         massSlider = canvas.transform.GetChild(2).GetChild(1).GetComponent<Slider>();
+        // massSlider.value = body.mass
+
         velocityText = canvas.transform.GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>();
         velocitySlider = canvas.transform.GetChild(3).GetChild(1).GetComponent<Slider>();
         canvas.GetComponent<Canvas>().enabled = false;

@@ -52,11 +52,6 @@ public class InputManager : MonoBehaviour
                 indicatorObj.transform.position = newPosition;
                 if (!indicatorObj.activeSelf) indicatorObj.SetActive(true); // make sure it is visible
             }
-            else if (hit.collider.gameObject.tag == "TrackingObject")
-            {
-                hit.collider.gameObject.GetComponent<Billboard>().changeVisibility(true);
-                if (indicatorObj.activeSelf) indicatorObj.SetActive(false);
-            } 
             else
             {
                 // object hit is NOT a ground surface suitable for this kind of teleportation
@@ -100,9 +95,14 @@ public class InputManager : MonoBehaviour
                 Vector3 newpos = new Vector3(target_x, target_y, target_z);
                 player.transform.position = newpos;
             }
-            if(hit.collider.gameObject.tag == "Teleport")
+            else if(hit.collider.gameObject.tag == "Teleport")
             {
                 StartCoroutine(GoToSceneRoutine("SolarSystem"));
+            }
+            else if (hit.collider.gameObject.tag == "TrackingObject")
+            {
+                hit.collider.gameObject.GetComponent<Billboard>().changeVisibility(true);
+                if (indicatorObj.activeSelf) indicatorObj.SetActive(false);
             }
 
         }
