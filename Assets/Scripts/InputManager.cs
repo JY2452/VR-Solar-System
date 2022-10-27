@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
 public class InputManager : MonoBehaviour
@@ -11,7 +12,9 @@ public class InputManager : MonoBehaviour
     public GameObject player;
     public float PLAYER_EYE_HEIGHT = 1.0f;  // offset from ground assumed in the y direction
     public float MAX_DISTANCE = 8f;         // max distance for teleportion (after testing can be converted to a constant
-    public float TARGET_OFFSET = 0.1f;      // distance to display teleport target object 
+    public float TARGET_OFFSET = 0.1f;      // distance to display teleport target object
+
+    public FadeScreen fadeScreen;
 
     public static UnityAction onTriggerDown = null;
 
@@ -37,7 +40,7 @@ public class InputManager : MonoBehaviour
 
         Ray ray = new Ray(anchor.position, anchor.forward); // cast a ray from the controller out towards where it is pointing
         RaycastHit hit;                                     // returns the hit variable to indicate what and where the ray 
-                                                            // was intersected if at all
+                                                            // was intersected if at all 
 
         if (Physics.Raycast(ray, out hit, MAX_DISTANCE))
         {
@@ -49,6 +52,11 @@ public class InputManager : MonoBehaviour
                 indicatorObj.transform.position = newPosition;
                 if (!indicatorObj.activeSelf) indicatorObj.SetActive(true); // make sure it is visible
             }
+            else if (hit.collider.gameObject.tag == "TrackingObject")
+            {
+                hit.collider.gameObject.GetComponent<Billboard>().changeVisibility(true);
+                if (indicatorObj.activeSelf) indicatorObj.SetActive(false);
+            } 
             else
             {
                 // object hit is NOT a ground surface suitable for this kind of teleportation
@@ -92,8 +100,19 @@ public class InputManager : MonoBehaviour
                 Vector3 newpos = new Vector3(target_x, target_y, target_z);
                 player.transform.position = newpos;
             }
+            if(hit.collider.gameObject.tag == "Teleport")
+            {
+                StartCoroutine(GoToSceneRoutine("SolarSystem"));
+            }
 
         }
+    }
+
+    IEnumerator GoToSceneRoutine(string s)
+    {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        SceneManager.LoadScene("SolarSystem");
     }
 
 }
